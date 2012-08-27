@@ -17,10 +17,10 @@ hostname=$(uname -n)
 echo "VERSION = $VERSION"
 
 # Create initial directories
-ssh $DOCS_SERVER mkdir -p $ROOTPATHDOCS/lab/manual-french
+ssh $DOCS_SERVER mkdir -p $ROOTPATHDOCS/lab/manual-chinese
 
 # Copy artifacts
-rsync -r  --delete $DIR/target/html/ $DOCS_SERVER:$ROOTPATHDOCS/lab/manual-french/
+rsync -r  --delete $DIR/target/html/ $DOCS_SERVER:$ROOTPATHDOCS/lab/manual-chinese/
 
 
 echo Apparently, successfully published to $DOCS_SERVER.

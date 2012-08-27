@@ -8,10 +8,10 @@
     <relativePath />
   </parent>
   <groupId>org.neo4j.doc</groupId>
-  <artifactId>neo4j-manual-fr</artifactId>
+  <artifactId>neo4j-manual-zh</artifactId>
   <version>1.8-SNAPSHOT</version>
-  <name>The Neo4j Manual in French</name>
-  <description>The Neo4j Manual in French.</description>
+  <name>The Neo4j Manual in Chinese</name>
+  <description>The Neo4j Manual in Chinese.</description>
   <url>http://components.neo4j.org/${project.artifactId}/${project.version}</url>
   <packaging>pom</packaging>
 
