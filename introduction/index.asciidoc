@@ -1,0 +1,31 @@
+[[introduction]]
+Introduction
+============
+
+[partintro]
+--
+Cette partie offre un aperçu de ce qu'est une base de données graphe et souligne ensuite quelques spécificités de Neo4j.
+--
+
+:leveloffset: 1
+
+include::highlights.asciidoc[]
+
+[[graphdb-concepts]]
+Concepts d'une base de données graphe
+=====================================
+
+Ce chapitre contient une introduction au modèle de données en graphe et le compare également à d'autres modèles de données utilisés pour la persistance de données.
+
+:leveloffset: 2
+
+include::what-is-a-graphdb.asciidoc[]
+
+:leveloffset: 2
+
+include::comparing.asciidoc[]
+
+:leveloffset: 1
+
+include::the-neo4j-graphdb.asciidoc[]
+

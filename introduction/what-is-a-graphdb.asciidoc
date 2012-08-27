@@ -1,0 +1,117 @@
+[[what-is-a-graphdb]]
+Qu'est-ce qu'une base de données graphe?
+========================================
+
+Une base de données graphe stocke les données en graphe, structure de données la plus générique, capable de représenter avec élégance n'importe quel type de 
+données d'une manière ultra accessible.
+Laissons nous guider le long de quelques graphes afin d'exprimer certains concepts.
+Nous "lirons" le graphe tout simplement en suivant ses flèches dans le diagramme afin de former des phrases.
+
+== Un graphe contient des Noeuds et des Relations ==
+
+____
+``Un graphe —enregistre les données en-> Noeuds —qui contiennent des-> Propriétés''
+____
+
+Le graphe le plus basique est un simple noeud, un enregistrement qui contient des valeurs nommées, ces noms sont référés comme Propriétés.
+Un Noeud peut partir avec une seule Propriété et grandir jusqu'à en contenir des millions, bien que cela puisse paraître un peu maladroit.
+A un certain point, il est évident de distribuer les données en multiples Noeuds organisés explicitement à l'aide de Relations.
+
+
+["dot", "graphdb-GVE.svg", "meta"]
+----
+"Graphe" [fillcolor="NODEHIGHLIGHT"]
+"Graphe" -> Noeuds [label="enregistre les\n données en" weight=2.0]
+"Graphe" -> Relations [label="enregistre les\n données en" weight=2.0]
+Relations -> Noeuds [label="organise"]
+Noeuds -> Propriétés [label="contient"]
+Relations -> Propriétés [label="contient"]
+----
+
+== Les Relations organisent le graphe ==
+
+____
+``Les Noeuds —sont organisés par des-> Relations —qui contiennent également des-> Propriétés''
+____
+
+Les Relations organisent les Noeuds en structures arbitraires, permettant à un Graphe de ressembler à une Liste, une Hiérarchie, une Carte ou une Entité composée -- chacune de ces ressemblances pouvant être combinées en une structure beaucoup plus complexe et richement connectée.
+
+
+== Interroger un Graphe à l'aide d'une Traversée ==
+
+____
+``Une Traversée —navigue dans-> un Graphe; elle —identifie des-> Chemins —qui ordonnent les-> Noeuds''
+____
+
+Une Traversée est la manière dont vous interrogez un Graphe, naviguant depuis les Noeuds de départ vers les Noeuds reliés en accordance avec un algorithme, répondant à des questions ``Quelles chansons aiment mes amis mais que je ne possède pas?'' ou ``si cette génératrice d'énergie tombe en panne, quels services web sont affectés?''
+
+
+["dot", "graphdb-traversal.svg", "meta"]
+----
+Traversée [fillcolor="NODEHIGHLIGHT"]
+"Graphe" [fillcolor="NODE2HIGHLIGHT"]
+Chemin [fillcolor="NODE2HIGHLIGHT"]
+Algorithme [fillcolor="NODE2HIGHLIGHT"]
+Relations -> Noeuds [label="organise"]
+"Graphe" -> Noeuds [label="enregistre les\ndonnées en"]
+"Graphe" -> Relations [label="enregistre les\ndonnées en"]
+Traversée -> "Graphe" [label="navigue" weight=2.0 color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Traversée -> Chemin [label="identifie" weight=2.0 color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Traversée -> Algorithme [label="exprime" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Chemin -> Noeuds [label="ordonne" weight=2.0]
+----
+
+
+== Les indexs indentifient des Noeuds ou des Relations ==
+
+____
+``Un Index —relie des-> Properiétés —à des-> Noeuds ou Relations''
+____
+
+Parfois vous voulez trouver un Noeud ou une Relation spécifique en accordance avec une Propriété qu'elle contient.
+Plutôt que de traverser un Graphe entier, utilisez un Index afin de procéder à une recherche comme ``trouver le Compte ayant comme nom d'utilisateur maître-des-graphes.''
+
+
+["dot", "graphdb-indexes.svg", "meta"]
+----
+Indexs [fillcolor="NODEHIGHLIGHT"]
+Relations -> Noeuds [label="organise"]
+Noeuds -> Propriétés [label="contient"]
+Relations -> Propriétés [label="contient"]
+Indexs -> Noeuds [label="relie à" weight=2.0]
+Indexs -> Relations [label="relie à" weight=2.0]
+Indexs -> Propriétés [label="relié des" weight=2.0]
+----
+
+== Neo4j est une base de données Graphe ==
+
+____
+``Une base de données Graphe —gère un-> Graphe et —gère aussi les-> Indexs''
+____
+
+Neo4j est une base de données graphe open-source supportée commercialement.
+Elle a été conceptualisée et construite depuis le début afin d'être une base de données fiable, optimisée pour les structures en graphe en place et lieu de tables.
+En travaillant avec Neo4j, votre application profite de toutes les expressivités d'un graphe tout en vous garantissant la fiabilité que vous attendez d'une base de données.
+
+
+["dot", "graphdb-overview.svg", "meta", scaledwidth="75%"]
+----
+"Base de données Graphe" [fillcolor="NODEHIGHLIGHT"]
+"Graphe" [fillcolor="NODE2HIGHLIGHT"]
+Indexs [fillcolor="NODE2HIGHLIGHT"]
+Relations -> Noeuds [label="organisent"]
+Noeuds -> Propriétés [label="contient"]
+Relations -> Propriétés [label="contient"]
+"Base de données Graphe" -> "Graphe" [label="gère" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+"Graphe" -> Noeuds [label="enregistre les\ndonnées en"]
+"Graphe" -> Relations [label="enregistre les\ndonnées en"]
+"Base de données Graphe" -> Indexs [label="gère" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Indexs -> Noeuds [label="relie à"]
+Indexs -> Relations [label="relie à"]
+Indexs -> Propriétés [label="relie des"]  
+Traversée -> "Graphe" [label="navigue"]
+Traversée -> Chemins [label="identifie"]
+Traversée -> Algorithme [label="exprime"]
+Chemins -> Noeuds [label="ordonne"]
+----
+

@@ -1,0 +1,208 @@
+[[graphdb-neo4j]]
+La base de données Graphe Neo4j
+===============================
+
+Ce chapître entre plus en détails dans le comportement et le modèle de données de Neo4j.
+
+[[graphdb-neo4j-nodes]]
+== Noeuds ==
+
+Les unités fondamentales composant un graphe sont les noeuds et relations.
+Dans Neo4j, aussi bien les noeuds que les relations peuvent contenir des <<graphdb-neo4j-properties,propriétés>>.
+
+Les noeuds sont souvent utilisés pour représenter des _entités_, mais en fonction de votre domaine des relations peuvent être utilisées pour cet usage.
+
+["dot", "graphdb-nodes-overview.svg", "meta"]
+----
+"Un Noeud" [fillcolor="NODEHIGHLIGHT"]
+"Un Noeud" -> "Relations" [label="peut avoir des"]
+"Un Noeud" -> "Propriétés" [label="peut avoir des"]
+----
+
+Commençons avec un graphe super simple, contenant seulement un noeud avec une propriété:
+
+["dot", "graphdb-nodes.svg"]
+----
+"name: Marko"
+----
+
+
+[[graphdb-neo4j-relationships]]
+== Relations ==
+
+Les relations entre les noeuds sont un élément clé d'une base de données graphe.
+Elles permettent de trouvent les données reliées.
+Tout comme les noeuds, les relations peuvent avoir des <<graphdb-neo4j-properties,propriétés>>.
+
+["dot", "graphdb-rels-overview.svg", "meta"]
+----
+"Une Relation" [fillcolor="NODEHIGHLIGHT"]
+"Une Relation" -> "Noeud de départ" [label="a un"]
+"Une Relation" -> "Noeud d'arrivée" [label="a un"]
+"Une Relation" -> "Type de relation" [label="a un"]
+"Une Relation" -> "Properités" [label="peut avoir des"]
+"Type de Relation" -> Nom [label="identifié uniquement par un"]
+----
+
+Une relation connecte deux noeuds en guarantissant d'avoir des noeuds de départ et d'arrivée valides.
+
+["dot", "graphdb-rels.svg"]
+----
+graph [rankdir="LR"]
+"Noeud de départ" -> "Noeud d'arrivée" [label="relation"]
+----
+
+Du fait que les relations sont toujours directionnelles, elles peuvent être visualisées comme entrantes ou sortantes d'un noeud, ce qui est utile quand on traverse un graphe:
+
+["dot", "graphdb-rels-dir.svg"]
+----
+graph [rankdir="LR"]
+START [label=""]
+MIDDLE [label="Noeud" fillcolor="NODEHIGHLIGHT"]
+END [label=""]
+MIDDLE -> END [label="relation sortante"]
+START -> MIDDLE [label="relation entrante"]
+----
+
+'Les relations sont traversées aussi efficacement dans n'importe quelle direction.'
+Cela signifie qu'il est nullement nécessaire d'ajouter un duplicata de la relation dans le sens opposé (en rapport avec les traversées ou la performance).
+
+Bien que les relations ont toujours une direction, vous pouvez ignorer cette direction quand cela n'est pas nécessaire dans votre application.
+
+Notez qu'un noeud peut également avoir des relations vers lui-même:
+
+["dot", "graphdb-rels-loop.svg"]
+----
+"Noeud" -> "Noeud" [label="boucle"]
+----
+
+Pour améliore encore plus la traversée d'un graphe, toutes les relations ont un type de relation.
+Notez que le terme _type_ peut être ambigü ici, vous pouvez plutôt penser à une _étiquette_.
+Les exemples suivants montrent un réseau social simple avec deux relations.
+
+["dot", "graphdb-rels-twitter.svg"]
+----
+Maja -> Oscar [label="suit"]
+Oscar -> Maja [label="suit"]
+Alice -> Oscar [label="suit"]
+Oscar -> William [label="bloque" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+----
+
+.Utilisation d'une direction et type de relation
+[options="header"]
+|========================================================
+| Quoi | Comment
+| savoir qui une personne suit | relations +suit+ sortantes, profondeur un
+| savoir les abonnés d'une personne | relations +suit+ entrantes, profondeur un
+| savoir qui une personne bloque | relations +bloque+ sortantes, profondeur un
+| savoir par qui une personne est bloquée | relations +bloque+ entrantes, profondeur un
+|========================================================
+
+Cet exemple est un modèle simple d'un système de fichiers, qui inclut des liens symboliques:
+
+["dot", "graphdb-rels-filesys.svg"]
+----
+"/" [ fillcolor="NODEHIGHLIGHT"]
+"/" -> A
+A -> B [label="fichier"]
+A -> C [label="fichier"]
+C -> D [label="fichier"]
+B -> D [label="lien symbolique \n{nom: \"E\"}" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+----
+
+En fonction de ce que vous recherchez, vous utiliserez les directions et types de relations pendant les traversées.
+
+[options="header"]
+|========================================================
+|Quoi | Comment
+|chemin complet d'un fichier | relations +fichier+ entrantes
+|tous les chemins d'un fichier | relations +fichier+ et +lien symbolique+ entrantes
+|tous les fichiers d'un dossier | relations +fichier+ et +lien symbolique+ sortantes, profondeur un
+|tous les fichiers d'un dossier, sauf les liens symboliques | relations +fichier+ sortantes, profondeur un
+|tous les fichiers d'un dossier, récursivement | relations +fichier+ et +lien symbolique+
+|========================================================
+
+
+[[graphdb-neo4j-properties]]
+== Propriétés ==
+
+Aussi bien les noeuds que les relations peuvent contenir des propriétés.
+
+Les propriétés sont des paires clé-valeur où les clés sont des chaînes des caractères.
+Les valeurs peuvent être aussi bien primitives ou un tableau de types primitives.
+Par exemple les valeurs +String+, +int+ et +int[]+ sont des propriétés valides.
+
+[NOTE]
++null+ n'est pas une valeur de propriété valide.
+Null peut être modélisé par l'absence d'une clé.
+
+["dot", "graphdb-properties.svg", "meta"]
+----
+"Une Propriété" [fillcolor="NODEHIGHLIGHT"]
+"Une Propriété" -> Clé [label="a une"]
+Clé -> Primitive:String [label="est une"]
+"Une Propriété" -> Valeur [label="a une"]
+Valeur -> Primitive [label="peut être une"]
+Valeur -> Primitive [label="peut être un tableau de"]
+Primitive [shape="record" label="Primitives |{boolean|byte|short|int|long|float|double|char|<String>String}"]
+----
+
+[[property-value-types]]
+.Type de valeurs de propriétés
+[options="header", cols="15m,45,40"]
+|========================================================
+|Type | Déscription | rayon de valeurs
+|boolean| | +true+/+false+
+|byte|8-bit integer | +-128+ to +127+, inclus
+|short|16-bit integer | +-32768+ to +32767+, inclus
+|int| 32-bit integer | +-2147483648+ to +2147483647+, inclus
+|long| 64-bit integer | +-9223372036854775808+ to +9223372036854775807+, inclus
+|float| 32-bit IEEE 754 nombre à virgule flottante |
+|double| 64-bit IEEE 754 nombre à virgule flottante |
+|char| 16-bit entiers non-signés représentant des caractères Unicode | +u0000+ à +uffff+ (+0+ à +65535+)
+|String| séquence de caractères Unicode |
+|========================================================
+
+Pour plus de détails sur les valeurs flottantes/doubles, voyez http://docs.oracle.com/javase/specs/jls/se5.0/html/typesValues.html#4.2.3[Java Language Specification].
+
+[[graphdb-neo4j-paths]]
+== Chemins ==
+
+Un chemin est un ou plusieurs noeuds avec des relations connectées, généralement récupérés comme résultat d'une requête ou traversée.
+
+["dot", "graphdb-path.svg", "meta"]
+----
+"Un Chemin" [fillcolor="NODEHIGHLIGHT"]
+"Un Chemin" -> "Noeud de départ" [label="a un"]
+"Un Chemin" -> "Relations" [label="contient une ou plusieurs"]
+"Relations" -> "Noeud" [label="accompagnées par un"]
+"Un Chemin" -> "Noeud d'arrivée" [label="a un"]
+----
+
+Le chemin le plus court possible a une longueur de zéro et ressemble à cela:
+
+["dot", "graphdb-path-example1.svg"]
+----
+"Noeud"
+----
+
+Un chemin de longueur un:
+
+["dot", "graphdb-path-example2.svg"]
+----
+"Noeud 1" -> "Noeud 2" [label="Relation 1"]
+----
+
+[[graphdb-neo4j-traversal]]
+== Traversée ==
+
+Traverser un graphe signifie visiter ses noeuds et suivre ses relations, cela en accordance avec certaines règles.
+Dans la plupart des cas, seulement un sous-graphe est visité du fait que vous connaissez déjà dans quelle partie du graphe se trouvent les noeuds et relations qui vous intéressent.
+
+Neo4j est fourni avec une API basée sur des callbacks, ce qui vous laisse la possibilité de spécifier les règles pour les traversées.
+A un niveau basique, vous avez le choix entre les traversées ``breadth`` ou ``depth-first``.
+
+Pour une introduction plus en détails du framework de traversées, voyez le <<tutorial-traversal>>.
+Pour des exemples de code Java, voyez <<tutorials-java-embedded-traversal>>.
+
+Les autres options pour traverser ou interroger un graphe dans Neo4j sont <<cypher-query-lang, Cypher>> et <<gremlin-plugin, Gremlin>>.
