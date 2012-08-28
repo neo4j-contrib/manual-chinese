@@ -1,34 +1,13 @@
-The Neo4j Manual v{neo4j-version}
-=================================
-
+Neo4j简体中文手册 v{neo4j-version}
+============================
+:neo4j-version: {neo4j-version}
+:neo4j-buildnumber: {neo4j-version}
 :neo4j-git-tag: {gitversion}
 
 :leveloffset: 1
 
+include::preface/preface.asciidoc[]
+
+:leveloffset: 1
+
 include::introduction/index.asciidoc[]
-
-////
-Just trying things out here:
-
-// images are looked up in target/classes/images
-image::Hello-World-Graph-java.svg[]
-
-// {importdir} points to target/docs
-
-[source]
-----
-include::{importdir}/neo4j-examples-docs-jar/dev/hello-world-java-output.txt[]
-----
-
-// code snippets like this one can be copy-paste from the
-// source of the neo4j manual like so:
-
-[snippet,java]
-----
-component=neo4j-examples
-source=org/neo4j/examples/EmbeddedNeo4j.java
-classifier=sources
-tag=createReltype
-----
-
-////
