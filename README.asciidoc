@@ -1,0 +1,39 @@
+关于Neo4j简体中文手册
+==================
+
+这个工程不是http://www.neo4j.org.cn[Neo4j简体中文手册]，而是这个文档的源文件。
+
+这个文档采用asciidoc格式书写，关于asciidoc的介绍，请查看:
+
+* http://www.methods.co.nz/asciidoc/
+* http://powerman.name/doc/asciidoc
+
+== 生成目标文档 ==
+Asciidoc version 8.6.3以及它依赖的一些特别是docbook，w3m，fop和graphviz是必备工具之一。
+
+带有http://www.gnu.org/software/make/[Make]的http://maven.apache.org/[Apache Maven]用来解压手册文件并利用asciidoc生成目标文件。
+注意，Make (-j option)的并行计算是不支持的。
+
+生成最终Neo4j简体中文手册的命令: +
+`mvn clean install`
+
+为了一个更加快速的文件结构检查以及看看片段和图片能否正常解析，使用：
+`mvn clean compile -Dcheck`
+，它智慧生成html离线文件以及简单的文本输出（包括手册页）。这个功能不能在`package`作为目标的时候使用。
+
+=== 在OSX使用brew命令安装 ===
+
+  brew install docbook asciidoc w3m fop graphviz
+
+  sudo docbook-register
+
+=== Ubuntu使用apt-get安装 ===
+
+  sudo apt-get install asciidoc docbook fop graphviz w3m maven libxml2-utils xsltproc
+
+如果只是学习Neo4j，请直接浏览我们的官方网站(中文站)：http://www.neo4j.org.cn[Neo4j中文站 – 世界领先的图数据库]。
+
+欢迎加入我们一起推广Neo4j图数据库的使用，以及Neo4j文档的汉化工作。
+
+
+
