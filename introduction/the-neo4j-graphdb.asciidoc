@@ -1,25 +1,24 @@
 [[graphdb-neo4j]]
-La base de données Graphe Neo4j
-===============================
+Neo4j图数据库
+=========
 
-Ce chapître entre plus en détails dans le comportement et le modèle de données de Neo4j.
+这个章节将讲述Neo4j模型和行为的更多细节。
 
 [[graphdb-neo4j-nodes]]
-== Noeuds ==
+== 节点 ==
 
-Les unités fondamentales composant un graphe sont les noeuds et relations.
-Dans Neo4j, aussi bien les noeuds que les relations peuvent contenir des <<graphdb-neo4j-properties,propriétés>>.
+构成一张图的基本元素是节点和关系。在Neo4j中，节点和关系都可以包含<<graphdb-neo4j-properties,属性>>。
 
-Les noeuds sont souvent utilisés pour représenter des _entités_, mais en fonction de votre domaine des relations peuvent être utilisées pour cet usage.
+节点经常被用于表示一些_实体_，但依赖关系也一样可以表示实体。
 
 ["dot", "graphdb-nodes-overview.svg", "meta"]
 ----
-"Un Noeud" [fillcolor="NODEHIGHLIGHT"]
-"Un Noeud" -> "Relations" [label="peut avoir des"]
-"Un Noeud" -> "Propriétés" [label="peut avoir des"]
+"A Node" [fillcolor="NODEHIGHLIGHT"]
+"A Node" -> "Relationships" [label="can have"]
+"A Node" -> "Properties" [label="can have"]
 ----
 
-Commençons avec un graphe super simple, contenant seulement un noeud avec une propriété:
+下面让我们认识一个最简单的节点，他只有一个属性，属性名是name,属性值是Marko：
 
 ["dot", "graphdb-nodes.svg"]
 ----
@@ -28,181 +27,180 @@ Commençons avec un graphe super simple, contenant seulement un noeud avec une p
 
 
 [[graphdb-neo4j-relationships]]
-== Relations ==
+== 关系 ==
 
-Les relations entre les noeuds sont un élément clé d'une base de données graphe.
-Elles permettent de trouvent les données reliées.
-Tout comme les noeuds, les relations peuvent avoir des <<graphdb-neo4j-properties,propriétés>>.
+节点之间的关系是图数据库很重要的一部分。通过关系可以找到很多关联的数据，比如节点集合，关系集合以及他们的<<graphdb-neo4j-properties,属性>>集合。
 
 ["dot", "graphdb-rels-overview.svg", "meta"]
 ----
-"Une Relation" [fillcolor="NODEHIGHLIGHT"]
-"Une Relation" -> "Noeud de départ" [label="a un"]
-"Une Relation" -> "Noeud d'arrivée" [label="a un"]
-"Une Relation" -> "Type de relation" [label="a un"]
-"Une Relation" -> "Properités" [label="peut avoir des"]
-"Type de Relation" -> Nom [label="identifié uniquement par un"]
+"A Relationship" [fillcolor="NODEHIGHLIGHT"]
+"A Relationship" -> "Start node" [label="has a"]
+"A Relationship" -> "End node" [label="has a"]
+"A Relationship" -> "Relationship type" [label="has a"]
+"A Relationship" -> "Properties" [label="can have"]
+"Relationship type" -> Name [label="uniquely identified by"]
 ----
 
-Une relation connecte deux noeuds en guarantissant d'avoir des noeuds de départ et d'arrivée valides.
+一个关系连接两个节点，必须有一个开始节点和结束节点。
 
 ["dot", "graphdb-rels.svg"]
 ----
 graph [rankdir="LR"]
-"Noeud de départ" -> "Noeud d'arrivée" [label="relation"]
+"Start node" -> "End node" [label="relationship"]
 ----
 
-Du fait que les relations sont toujours directionnelles, elles peuvent être visualisées comme entrantes ou sortantes d'un noeud, ce qui est utile quand on traverse un graphe:
+因为关系总是直接相连的，所以对于一个节点来说，与他关联的关系看起来有输入/输出两个方向，这个特性对于我们遍历图非常有帮助：
 
 ["dot", "graphdb-rels-dir.svg"]
 ----
 graph [rankdir="LR"]
 START [label=""]
-MIDDLE [label="Noeud" fillcolor="NODEHIGHLIGHT"]
+MIDDLE [label="Node" fillcolor="NODEHIGHLIGHT"]
 END [label=""]
-MIDDLE -> END [label="relation sortante"]
-START -> MIDDLE [label="relation entrante"]
+MIDDLE -> END [label="outgoing relationship"]
+START -> MIDDLE [label="incoming relationship"]
 ----
 
-'Les relations sont traversées aussi efficacement dans n'importe quelle direction.'
-Cela signifie qu'il est nullement nécessaire d'ajouter un duplicata de la relation dans le sens opposé (en rapport avec les traversées ou la performance).
+关系在任一方向都会被遍历访问。这意味着我们并不需要在不同方向都新增关系。
 
-Bien que les relations ont toujours une direction, vous pouvez ignorer cette direction quand cela n'est pas nécessaire dans votre application.
+而关系总是会有一个方向，所以当这个方向对你的应用没有意义时你可以忽略方向。
 
-Notez qu'un noeud peut également avoir des relations vers lui-même:
+特别注意一个节点可以有一个关系是指向自己的：
 
 ["dot", "graphdb-rels-loop.svg"]
 ----
-"Noeud" -> "Noeud" [label="boucle"]
+"Node" -> "Node" [label="loop"]
 ----
 
-Pour améliore encore plus la traversée d'un graphe, toutes les relations ont un type de relation.
-Notez que le terme _type_ peut être ambigü ici, vous pouvez plutôt penser à une _étiquette_.
-Les exemples suivants montrent un réseau social simple avec deux relations.
+为了将来增强遍历图中所有的关系，我们需要为关系设置类型。注意 关键字 type 在这可能会被误解，你其实可以把他简单的理解为一个标签而已。
+
+下面的例子是一个有两种关系的最简单的社会化网络图。
 
 ["dot", "graphdb-rels-twitter.svg"]
 ----
-Maja -> Oscar [label="suit"]
-Oscar -> Maja [label="suit"]
-Alice -> Oscar [label="suit"]
-Oscar -> William [label="bloque" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Maja -> Oscar [label="follows"]
+Oscar -> Maja [label="follows"]
+Alice -> Oscar [label="follows"]
+Oscar -> William [label="blocks" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
 ----
 
-.Utilisation d'une direction et type de relation
+.使用到的关系和关系类型
 [options="header"]
 |========================================================
-| Quoi | Comment
-| savoir qui une personne suit | relations +suit+ sortantes, profondeur un
-| savoir les abonnés d'une personne | relations +suit+ entrantes, profondeur un
-| savoir qui une personne bloque | relations +bloque+ sortantes, profondeur un
-| savoir par qui une personne est bloquée | relations +bloque+ entrantes, profondeur un
+| 功能 | 实现
+| get who a person follows | outgoing +follows+ relationships, depth one
+| get the followers of a person | incoming +follows+ relationships, depth one
+| get who a person blocks | outgoing +blocks+ relationships, depth one
+| get who a person is blocked by | incoming +blocks+ relationships, depth one
 |========================================================
 
-Cet exemple est un modèle simple d'un système de fichiers, qui inclut des liens symboliques:
+
+下面的放里是一个简单的文件系统，包括一些符号软链接：
 
 ["dot", "graphdb-rels-filesys.svg"]
 ----
 "/" [ fillcolor="NODEHIGHLIGHT"]
 "/" -> A
-A -> B [label="fichier"]
-A -> C [label="fichier"]
-C -> D [label="fichier"]
-B -> D [label="lien symbolique \n{nom: \"E\"}" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+A -> B [label="file"]
+A -> C [label="file"]
+C -> D [label="file"]
+B -> D [label="symbolic link \n{name: \"E\"}" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
 ----
 
-En fonction de ce que vous recherchez, vous utiliserez les directions et types de relations pendant les traversées.
+根据你看到的，你在遍历的时候会用到关系的方向和关系的类型。
 
 [options="header"]
 |========================================================
-|Quoi | Comment
-|chemin complet d'un fichier | relations +fichier+ entrantes
-|tous les chemins d'un fichier | relations +fichier+ et +lien symbolique+ entrantes
-|tous les fichiers d'un dossier | relations +fichier+ et +lien symbolique+ sortantes, profondeur un
-|tous les fichiers d'un dossier, sauf les liens symboliques | relations +fichier+ sortantes, profondeur un
-|tous les fichiers d'un dossier, récursivement | relations +fichier+ et +lien symbolique+
+|What | How
+|get the full path of a file | incoming +file+ relationships
+|get all paths for a file | incoming +file+ and +symbolic link+ relationships
+|get all files in a directory | outgoing +file+ and +symbolic link+ relationships, depth one
+|get all files in a directory, excluding symbolic links | outgoing +file+ relationships, depth one
+|get all files in a directory, recursively | outgoing +file+ and +symbolic link+ relationships
 |========================================================
 
 
 [[graphdb-neo4j-properties]]
-== Propriétés ==
+== 属性 ==
 
-Aussi bien les noeuds que les relations peuvent contenir des propriétés.
+节点和关系都可以设置自己的属性。
 
-Les propriétés sont des paires clé-valeur où les clés sont des chaînes des caractères.
-Les valeurs peuvent être aussi bien primitives ou un tableau de types primitives.
-Par exemple les valeurs +String+, +int+ et +int[]+ sont des propriétés valides.
+
+属性是由Key-Value键值对组成，键名是字符串。属性值是要么是原始值，要么是原始值类型的一个数组。比如+String+，+int+和i+int[]+都是合法的。
 
 [NOTE]
-+null+ n'est pas une valeur de propriété valide.
-Null peut être modélisé par l'absence d'une clé.
+null不是一个合法的属性值。
+Nulls能代替模仿一个不存在的Key。
 
 ["dot", "graphdb-properties.svg", "meta"]
 ----
-"Une Propriété" [fillcolor="NODEHIGHLIGHT"]
-"Une Propriété" -> Clé [label="a une"]
-Clé -> Primitive:String [label="est une"]
-"Une Propriété" -> Valeur [label="a une"]
-Valeur -> Primitive [label="peut être une"]
-Valeur -> Primitive [label="peut être un tableau de"]
-Primitive [shape="record" label="Primitives |{boolean|byte|short|int|long|float|double|char|<String>String}"]
+"A Property" [fillcolor="NODEHIGHLIGHT"]
+"A Property" -> Key [label="has a"]
+Key -> Primitive:String [label="is a"]
+"A Property" -> Value [label="has a"]
+Value -> Primitive [label="can be a"]
+Value -> Primitive [label="can be an array of"]
+Primitive [shape="record" label="Primitive |{boolean|byte|short|int|long|float|double|char|<String>String}"]
 ----
 
 [[property-value-types]]
-.Type de valeurs de propriétés
+.属性值类型
 [options="header", cols="15m,45,40"]
 |========================================================
-|Type | Déscription | rayon de valeurs
+|Type | Description | Value range
 |boolean| | +true+/+false+
-|byte|8-bit integer | +-128+ to +127+, inclus
-|short|16-bit integer | +-32768+ to +32767+, inclus
-|int| 32-bit integer | +-2147483648+ to +2147483647+, inclus
-|long| 64-bit integer | +-9223372036854775808+ to +9223372036854775807+, inclus
-|float| 32-bit IEEE 754 nombre à virgule flottante |
-|double| 64-bit IEEE 754 nombre à virgule flottante |
-|char| 16-bit entiers non-signés représentant des caractères Unicode | +u0000+ à +uffff+ (+0+ à +65535+)
-|String| séquence de caractères Unicode |
+|byte|8-bit integer | +-128+ to +127+, inclusive 
+|short|16-bit integer | +-32768+ to +32767+, inclusive
+|int| 32-bit integer | +-2147483648+ to +2147483647+, inclusive
+|long| 64-bit integer | +-9223372036854775808+ to +9223372036854775807+, inclusive
+|float| 32-bit IEEE 754 floating-point number |
+|double| 64-bit IEEE 754 floating-point number |
+|char| 16-bit unsigned integers representing Unicode characters | +u0000+ to +uffff+ (+0+ to +65535+)
+|String| sequence of Unicode characters |
 |========================================================
 
-Pour plus de détails sur les valeurs flottantes/doubles, voyez http://docs.oracle.com/javase/specs/jls/se5.0/html/typesValues.html#4.2.3[Java Language Specification].
+如果要了解float/double类型的更多细节，请参考：http://docs.oracle.com/javase/specs/jls/se5.0/html/typesValues.html#4.2.3[Java Language Specification]。
 
 [[graphdb-neo4j-paths]]
-== Chemins ==
+== 路径 ==
 
-Un chemin est un ou plusieurs noeuds avec des relations connectées, généralement récupérés comme résultat d'une requête ou traversée.
+路径由至少一个节点，通过各种关系连接组成，经常是作为一个查询或者遍历的结果。
 
 ["dot", "graphdb-path.svg", "meta"]
 ----
-"Un Chemin" [fillcolor="NODEHIGHLIGHT"]
-"Un Chemin" -> "Noeud de départ" [label="a un"]
-"Un Chemin" -> "Relations" [label="contient une ou plusieurs"]
-"Relations" -> "Noeud" [label="accompagnées par un"]
-"Un Chemin" -> "Noeud d'arrivée" [label="a un"]
+"A Path" [fillcolor="NODEHIGHLIGHT"]
+"A Path" -> "Start Node" [label="has a"]
+"A Path" -> "Relationship" [label="can contain one or more"]
+"Relationship" -> "Node" [label="accompanied by a"]
+"A Path" -> "End Node" [label="has an"]
 ----
 
-Le chemin le plus court possible a une longueur de zéro et ressemble à cela:
+最短的路径是0长度的像下面这样：
 
 ["dot", "graphdb-path-example1.svg"]
 ----
-"Noeud"
+"Node"
 ----
 
-Un chemin de longueur un:
+长度为1的路径如下:
 
 ["dot", "graphdb-path-example2.svg"]
 ----
-"Noeud 1" -> "Noeud 2" [label="Relation 1"]
+"Node 1" -> "Node 2" [label="Relationship 1"]
 ----
 
 [[graphdb-neo4j-traversal]]
-== Traversée ==
+== 遍历（Traversal） ==
 
-Traverser un graphe signifie visiter ses noeuds et suivre ses relations, cela en accordance avec certaines règles.
-Dans la plupart des cas, seulement un sous-graphe est visité du fait que vous connaissez déjà dans quelle partie du graphe se trouvent les noeuds et relations qui vous intéressent.
+遍历一张图就是按照一定的规则，跟随他们的关系，访问关联的的节点集合。
+最多的情况是只有一部分子图被访问到，因为你知道你对那一部分节点或者关系感兴趣。
 
-Neo4j est fourni avec une API basée sur des callbacks, ce qui vous laisse la possibilité de spécifier les règles pour les traversées.
-A un niveau basique, vous avez le choix entre les traversées ``breadth`` ou ``depth-first``.
+Neo4j提供了遍历的API，可以让你指定遍历规则。
+最简单的设置就是设置遍历是宽度优先还是深度优先。
 
-Pour une introduction plus en détails du framework de traversées, voyez le <<tutorial-traversal>>.
-Pour des exemples de code Java, voyez <<tutorials-java-embedded-traversal>>.
+想对遍历框架有一个深入的了解，请参考章节：<<tutorial-traversal>>。
 
-Les autres options pour traverser ou interroger un graphe dans Neo4j sont <<cypher-query-lang, Cypher>> et <<gremlin-plugin, Gremlin>>.
+想了解更多的Java代码范例，请参考章节：<<tutorials-java-embedded-traversal>>。
+
+其他查询图的方式还有<<cypher-query-lang, Cypher>>和<<gremlin-plugin, Gremlin>>。
+
