@@ -1,10 +1,10 @@
 [[introduction]]
-Introduction
-============
+简介
+==
 
 [partintro]
 --
-Cette partie offre un aperçu de ce qu'est une base de données graphe et souligne ensuite quelques spécificités de Neo4j.
+这个部分让我们了解一个图数据库到底是什么,以及总览下Neo4j相关的一些规则.
 --
 
 :leveloffset: 1
@@ -12,10 +12,10 @@ Cette partie offre un aperçu de ce qu'est une base de données graphe et soulig
 include::highlights.asciidoc[]
 
 [[graphdb-concepts]]
-Concepts d'une base de données graphe
-=====================================
+图数据库概要
+======
 
-Ce chapitre contient une introduction au modèle de données en graphe et le compare également à d'autres modèles de données utilisés pour la persistance de données.
+这个章节包括一个对图数据模型的介绍以及将它与其他我们常见的数据持久化模型的比较. persisting data.
 
 :leveloffset: 2
 
