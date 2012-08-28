@@ -1,13 +1,33 @@
 [preface]
 [[preface]]
+<<<<<<< HEAD
 Preface
 =======
+=======
+前言
+==
+>>>>>>> origin/develop-1.8
 
 这是由Neo4j团队书写的Neo4j v{neo4j-version}的参考手册。
 
 
 手册主要包括以下几部分：
 
+<<<<<<< HEAD
+=======
+////
+* <<introduction>> -- 介绍图数据库的概念以及Neo4j。
+* <<tutorials>> -- 学习如何使用Neo4j。
+* <<reference-documentation>> -- Neo4j的细节信息。
+* <<operations>> -- 如何安装和维护Neo4j。
+* <<tools>> -- 手册中用到的工具。
+* <<community>> -- 获取帮助或者提供贡献。
+* <<manpages>> -- 命令行文档。
+* <<questions>> -- 常见问题。
+////
+
+
+>>>>>>> origin/develop-1.8
 这些内容是经过实践的，技术性的，并关注于解答特别的问题。
 它告知我们在一个实际运行Neo4j的生产环境中如何工作，做什么以及不做什么，来保证我们项目的成功运行。
  
