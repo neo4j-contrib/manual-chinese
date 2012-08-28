@@ -1,117 +1,107 @@
 [[what-is-a-graphdb]]
-Qu'est-ce qu'une base de données graphe?
-========================================
+什么是图数据库?
+========
 
-Une base de données graphe stocke les données en graphe, structure de données la plus générique, capable de représenter avec élégance n'importe quel type de 
-données d'une manière ultra accessible.
-Laissons nous guider le long de quelques graphes afin d'exprimer certains concepts.
-Nous "lirons" le graphe tout simplement en suivant ses flèches dans le diagramme afin de former des phrases.
+图数据库用图来存储数据，是最接近高性能的一种用于存储数据的数据结构方式之一。让我们跟随下面的图表，用他们来解释图数据库相关概念。我们将跟随图表中箭头方向来读懂图想表达的真正含义。
 
-== Un graphe contient des Noeuds et des Relations ==
+A
+
+== 一个图由无数的节点和关系组成 ==
 
 ____
-``Un graphe —enregistre les données en-> Noeuds —qui contiennent des-> Propriétés''
+``一张图 – 数据记录在 -> 节点 -> 包括的 -> 属性里面''
 ____
 
-Le graphe le plus basique est un simple noeud, un enregistrement qui contient des valeurs nommées, ces noms sont référés comme Propriétés.
-Un Noeud peut partir avec une seule Propriété et grandir jusqu'à en contenir des millions, bien que cela puisse paraître un peu maladroit.
-A un certain point, il est évident de distribuer les données en multiples Noeuds organisés explicitement à l'aide de Relations.
-
+最简单的图是单节点的，一个记录，记录了一些属性。一个节点可以从单属性开始，成长为成千上亿，虽然会有一点点麻烦。从某种意义上讲，将数据用关系连接起来分布到不同节点上才是有意义的。
 
 ["dot", "graphdb-GVE.svg", "meta"]
 ----
-"Graphe" [fillcolor="NODEHIGHLIGHT"]
-"Graphe" -> Noeuds [label="enregistre les\n données en" weight=2.0]
-"Graphe" -> Relations [label="enregistre les\n données en" weight=2.0]
-Relations -> Noeuds [label="organise"]
-Noeuds -> Propriétés [label="contient"]
-Relations -> Propriétés [label="contient"]
+"Graph" [fillcolor="NODEHIGHLIGHT"]
+"Graph" -> Nodes [label="记录数据于" weight=2.0]
+"Graph" -> Relationships [label="记录数据于" weight=2.0]
+Relationships -> Nodes [label="组织"]
+Nodes -> Properties [label="拥有"]
+Relationships -> Properties [label="拥有"]
 ----
 
-== Les Relations organisent le graphe ==
+== 关系将图各个部分组织起来 ==
 
 ____
-``Les Noeuds —sont organisés par des-> Relations —qui contiennent également des-> Propriétés''
+``节点 — 被组织 -> 关系 — 可以有 -> 属性''
 ____
 
-Les Relations organisent les Noeuds en structures arbitraires, permettant à un Graphe de ressembler à une Liste, une Hiérarchie, une Carte ou une Entité composée -- chacune de ces ressemblances pouvant être combinées en une structure beaucoup plus complexe et richement connectée.
+关系可以将节点组织成任意的结构，允许一张图被组织成一个列表，一棵树，一张地图，或者一个复杂的实体 – 这个实体本身也是由复杂的，关系高度关联的结构组成。
 
 
-== Interroger un Graphe à l'aide d'une Traversée ==
+== 用 Traversal 进行数据库查询 ==
 
 ____
-``Une Traversée —navigue dans-> un Graphe; elle —identifie des-> Chemins —qui ordonnent les-> Noeuds''
+``一个 Traversal — 导航 -> 一张图; 他 — 标示 -> 路径 — 包含 -> 节点''
 ____
 
-Une Traversée est la manière dont vous interrogez un Graphe, naviguant depuis les Noeuds de départ vers les Noeuds reliés en accordance avec un algorithme, répondant à des questions ``Quelles chansons aiment mes amis mais que je ne possède pas?'' ou ``si cette génératrice d'énergie tombe en panne, quels services web sont affectés?''
-
+一次 Traversal, 你可以理解为是你通过一种算法，从一些开始节点开始查询与其关联的节点，比如你想找到 “我朋友喜欢但我不喜欢的那首音乐是什么呢？”，又或者 “如果断电了，拿下服务器的服务会首影响？”等等问题。
 
 ["dot", "graphdb-traversal.svg", "meta"]
 ----
-Traversée [fillcolor="NODEHIGHLIGHT"]
-"Graphe" [fillcolor="NODE2HIGHLIGHT"]
-Chemin [fillcolor="NODE2HIGHLIGHT"]
-Algorithme [fillcolor="NODE2HIGHLIGHT"]
-Relations -> Noeuds [label="organise"]
-"Graphe" -> Noeuds [label="enregistre les\ndonnées en"]
-"Graphe" -> Relations [label="enregistre les\ndonnées en"]
-Traversée -> "Graphe" [label="navigue" weight=2.0 color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
-Traversée -> Chemin [label="identifie" weight=2.0 color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
-Traversée -> Algorithme [label="exprime" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
-Chemin -> Noeuds [label="ordonne" weight=2.0]
+Traversal [fillcolor="NODEHIGHLIGHT"]
+"Graph" [fillcolor="NODE2HIGHLIGHT"]
+Paths [fillcolor="NODE2HIGHLIGHT"]
+Algorithm [fillcolor="NODE2HIGHLIGHT"]
+Relationships -> Nodes [label="organize"]
+"Graph" -> Nodes [label="records data in"]
+"Graph" -> Relationships [label="records data in"]
+Traversal -> "Graph" [label="navigates" weight=2.0 color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Traversal -> Paths [label="identifies" weight=2.0 color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Traversal -> Algorithm [label="expresses" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Paths -> Nodes [label="order" weight=2.0]
 ----
 
 
-== Les indexs indentifient des Noeuds ou des Relations ==
+== 为节点和关系建立索引 ==
 
 ____
-``Un Index —relie des-> Properiétés —à des-> Noeuds ou Relations''
+``一个索引 — 映射到 -> 属性 — 属于 -> 节点或者关系''
 ____
 
-Parfois vous voulez trouver un Noeud ou une Relation spécifique en accordance avec une Propriété qu'elle contient.
-Plutôt que de traverser un Graphe entier, utilisez un Index afin de procéder à une recherche comme ``trouver le Compte ayant comme nom d'utilisateur maître-des-graphes.''
-
+经常，你想通过某一给定的属性值找到节点或者关系。比起通过遍历我们的图来书，用索引将会更加高效。比如“找到用户名是tony的用户”。
 
 ["dot", "graphdb-indexes.svg", "meta"]
 ----
-Indexs [fillcolor="NODEHIGHLIGHT"]
-Relations -> Noeuds [label="organise"]
-Noeuds -> Propriétés [label="contient"]
-Relations -> Propriétés [label="contient"]
-Indexs -> Noeuds [label="relie à" weight=2.0]
-Indexs -> Relations [label="relie à" weight=2.0]
-Indexs -> Propriétés [label="relié des" weight=2.0]
+Indexes [fillcolor="NODEHIGHLIGHT"]
+Relationships -> Nodes [label="organize"]
+Nodes -> Properties [label="have"]
+Relationships -> Properties [label="have"]
+Indexes -> Nodes [label="map to" weight=2.0]
+Indexes -> Relationships [label="map to" weight=2.0]
+Indexes -> Properties [label="map from" weight=2.0]
 ----
 
-== Neo4j est une base de données Graphe ==
+== Neo4j是一个图数据库 ==
 
 ____
-``Une base de données Graphe —gère un-> Graphe et —gère aussi les-> Indexs''
+``一个图数据库 — 管理 -> 一张图 和与图相关的 -> 索引''
 ____
 
-Neo4j est une base de données graphe open-source supportée commercialement.
-Elle a été conceptualisée et construite depuis le début afin d'être une base de données fiable, optimisée pour les structures en graphe en place et lieu de tables.
-En travaillant avec Neo4j, votre application profite de toutes les expressivités d'un graphe tout en vous garantissant la fiabilité que vous attendez d'une base de données.
-
+Neo4j是一个有商业支持的开源图数据库。他被设计来用于拿下数据不断高速成长的数据存储，用高效的图数据结构代替传统的表设计。用Neo4j工作，您的应用将得到图的所有优越表现，以及您期望的高可靠性。
 
 ["dot", "graphdb-overview.svg", "meta", scaledwidth="75%"]
 ----
-"Base de données Graphe" [fillcolor="NODEHIGHLIGHT"]
-"Graphe" [fillcolor="NODE2HIGHLIGHT"]
-Indexs [fillcolor="NODE2HIGHLIGHT"]
-Relations -> Noeuds [label="organisent"]
-Noeuds -> Propriétés [label="contient"]
-Relations -> Propriétés [label="contient"]
-"Base de données Graphe" -> "Graphe" [label="gère" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
-"Graphe" -> Noeuds [label="enregistre les\ndonnées en"]
-"Graphe" -> Relations [label="enregistre les\ndonnées en"]
-"Base de données Graphe" -> Indexs [label="gère" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
-Indexs -> Noeuds [label="relie à"]
-Indexs -> Relations [label="relie à"]
-Indexs -> Propriétés [label="relie des"]  
-Traversée -> "Graphe" [label="navigue"]
-Traversée -> Chemins [label="identifie"]
-Traversée -> Algorithme [label="exprime"]
-Chemins -> Noeuds [label="ordonne"]
+"Graph Database" [fillcolor="NODEHIGHLIGHT"]
+"Graph" [fillcolor="NODE2HIGHLIGHT"]
+Indexes [fillcolor="NODE2HIGHLIGHT"]
+Relationships -> Nodes [label="organize"]
+Nodes -> Properties [label="have"]
+Relationships -> Properties [label="have"]
+"Graph Database" -> "Graph" [label="manages" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+"Graph" -> Nodes [label="records data in"]
+"Graph" -> Relationships [label="records data in"]
+"Graph Database" -> Indexes [label="manages" color="EDGEHIGHLIGHT" fontcolor="EDGEHIGHLIGHT"]
+Indexes -> Nodes [label="map to"]
+Indexes -> Relationships [label="map to"]
+Indexes -> Properties [label="map from"]  
+Traversal -> "Graph" [label="navigates"]
+Traversal -> Paths [label="identifies"]
+Traversal -> Algorithm [label="expresses"]
+Paths -> Nodes [label="order"]
 ----
 

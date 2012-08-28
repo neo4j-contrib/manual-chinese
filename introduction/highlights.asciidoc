@@ -1,30 +1,22 @@
 [[introduction-highlights]]
-Points forts de Neo4j
-=====================
+Neo4j的亮点
+========
 
-Définie comme une base de données robuste, évolutive et très performante, Neo4j convient aussi bien pour le deploiement en grande entreprise que pour les projets plus légers en utilisant une partie du serveur complet.
+作为一款强健的，可伸缩的高性能数据库，Neo4j最适合完整的企业部署或者用于一个轻量级项目中完整服务器的一个子集存在。
+
+它包括如下几个显著特点:
+
+* 完整的ACID支持
+* 高可用性
+* 轻易扩展到上亿级别的节点和关系
+* 通过遍历工具高速检索数据
+
+适当的ACID操作是保证数据一致性的基础。Neo4j确保了在一个事务里面的多个操作同时发生，保证数据一致性。不管是采用嵌入模式还是多服务器集群部署，都支持这一特性。更多详细的介绍，请参考章节:<<transactions>>。
+
+可靠的图型存储可以非常轻松的集成到任何一个应用中。随着我们开发的应用在运营中不断发展，性能问题肯定会逐步凸显出来，而Neo4j不管应用如何变化，他只会受到计算机硬件性能的影响，不受业务本身的约束。
+
+部署一个neo4j服务器便可以承载上亿级的节点和关系。当然，当单节点无法承载我们的数据需求时，我们可以进行分布式集群部署，详细的细节，请参考章节：<<ha>>。
+
+将图数据库用于存储关系复杂的数据是他最大的优势。通过Neo4j提供的遍历工具，可以非常高效的进行数据检索，每秒可以达到上亿级的检索量。一个检索操作类似于RDBMS里面的连接（_join_）操作。
 
 
-Fonctionnalités:
-
-* transactions ACID réelles
-* haute disponibilité
-* supporte jusqu'à des milliards de noeuds et relations
-* requêtes ultra-rapides grâce aux traversées
-
-Un comportement ACID sain est le fondement même de la fiabilité.
-Neo4j renforce cela en s'assurant que toutes les opérations modifiant les données soient exécutées au sein d'une transaction, garantissant la cohérence des données.
-Cette robustesse s'étend depuis une simple instance de graphe embarquée vers des installations multi-serveurs à haute disponibilité.
-Pour plus de détails, reportez-vous à <<transactions>>.
-
-Un système de stockage en graphe fiable peut facilement être ajouté à n'importe quelle application.
-Un graphe s'étend en taille et complexité au fur et à mesure que l'application évolue, avec de faibles impacts sur la performance.
-Pour le commencement d'un nouveau projet comme pour l'ajout de fonctionnalités existantes, Neo4j est adapté et n'est limité que par le matériel physique.
-
-Une seule instance serveur peut traiter un graphe contenant des milliards de noeuds et relations.
-Quand le taux de transfert est insuffisant, la base de données graphe peut être distribuée sur plusieurs serveurs dans une configuration haute-disponibilité.
-Lisez <<ha>> pour en apprendre plus.
-
-Une base de données graphe brille quand elle stocke des données hautement connectées.
-Les requêtes sont exécutées à l'aide de traversées, qui peuvent procéder à plusieurs millions de traversées par seconde.
-Une traversée ressemble à une _jointure_ dans les bases de données relationnelles.
