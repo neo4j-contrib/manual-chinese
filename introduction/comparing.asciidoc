@@ -1,17 +1,14 @@
 [[tutorial-comparing-models]]
-Comparaison des modèles de données
-==================================
+比较各种数据库模型
+=========
 
-Une base de données Graph stocke les données structurées dans les Noeuds et Relatins d'un graphe.
-Comment cela est-il comparé à d'autres modèles de persistance?
-Du fait qu'un graphe est une structure générique, comparons ce à quoi d'autres modèles auraient l'air dans un graphe.
+图数据库通过在一张图上存储节点和关系来持久化我们的数据结构。比起其他持久化数据模型如何呢？因为图是一种常规数据结构，让我们与其他的进行一下比较试试看。
 
-== Une base de données graphe transforme un SGBDR ==
+== 从图数据库转换成 RDBMS ==
 
-Renversez la pile d'enregistrements d'une base de données relationnelle et vous verrez un graphe.
-Là où un SGBDR est optimisé pour les données aggrégées, Neo4j est optimisé pour les données fortement connectées.
+将所有的数据用竖立的堆栈表示，并且保持他们直接的关系，你可以看到下面一张图。一个 RDBMS 被优化用于聚合数据，而Neo4j擅长于高度关联的数据。
 
-.SGBDR
+.RDBMS
 ["dot", "graphdb-compare-rdbms.svg", "meta", scaledwidth="40%"]
 ----
 edge [arrowhead="none" arrowtail="none"]
@@ -50,7 +47,7 @@ C:3 -> B:2
 C:3 -> B:6
 ----
 
-.Base de données Graphe comme SGBDR
+.用图实现RDBMS模型
 ["dot", "graphdb-compare-rdbms-g.svg", "meta", scaledwidth="100%"]
 ----
 edge [arrowhead="none" arrowtail="none"]
@@ -80,12 +77,11 @@ C3 -> B6
 ----
 
 
-== Une Base de données Graphe conçoit les Stockages Clé-Valeur ==
+== 从图数据库转换成Key-Value数据库 ==
 
-Un modèle Clé-Valeur est très bien pour la recherche de simples valeurs ou de listes.
-Quand ces valeurs sont elle-mêmes interconnectées, vous obtenez un graphe.
-Neo4j vous laisse concevoir une simple structure de données en structure données interconnectées et plus complexes.
+Key-Value模型适合用于简单的数据或者列表。当数据之间不断交互关联时，你更需要一张图模型。Neo4j让你能惊醒制作简单的数据结构到复杂，互相连接的数据。
 
+.Key-Value 存储模型
 ["dot", "graphdb-compare-kvstore.svg", "meta"]
 ----
 rankdir="LR"
@@ -100,10 +96,9 @@ K:2 -> V2:v
 K:3 -> V3:v
 ----
 
-+K*+ représente une clé, +V*+ une valeur.
-Notez que certaines clés pointent vers d'autres clés comme vers des valeurs.
+K* 代表一个键，V* 代表一个值。请注意，某些键指向其他键以及普通值。
 
-.Graph Database as Key-Value Store
+.用图实现 Key-Value 模型
 ["dot", "graphdb-compare-kvstore-g.svg", "meta"]
 ----
 rankdir="LR"
@@ -129,19 +124,16 @@ K2 -> gV2
 K3 -> gV3
 ----
 
-== Une Base de données Graphe conçoit les stockages Orientés Colonnes ==
+== 从图数据库转换成列数据库 ==
 
-La famille des stockages Orientés Colonnes (style BigTable) sont une évolution du modèle Clé-Valeur, utilisant des "familles" afin de grouper certaines lignes.
-Enregistrées dans un graphe, ces familles peuvent devenir hiérarchiques et les relations entre les données deviennent explicites.
+列式（大表）数据库是 Key-Value模型的升级，用 “”来允许行数据增加。如果存储一张图，这个表将是分层的，关系也是非常明确的。
 
 
-== Une Base de données Graphe navigue à travers un stockage orienté Documents ==
+== 从图数据库转换成文档型数据库 ==
 
-L'hiérarchie en conteneur d'une base de données orientée document conçoit facilement les données non schématisées qui peuvent être représentées en Arbre, qui est évidemment un graphe.
-Référez-vous à d'autres documents (ou éléments de documents) au sein de ce même arbre et vous obtenez une représentation plus expressive de ces mêmes données.
-Dans Neo4j, ces relations sont facilement naviguables.
+文档型数据库用文档进行层次划分，而自由的数据规划也很容易被表示成一颗树。成长为一张图的话，文档之间的关联你需要更有代表性的数据结构来存储，而在Neo4j中，这些关系是非常容易处理的。
 
-.Document Store
+.文档型数据库
 ["dot", "graphdb-compare-docdb.svg", "meta", scaledwidth="75%"]
 ----
 subgraph cluster_0 {
@@ -176,9 +168,9 @@ subgraph cluster_2 {
 }
 ----
 
-+D+=Document, +S+=Sousdocument, +V+=Valeur, +D2/S2+ = Référence à un Sousdocument dans un (autre) Document.
++D+=文档, +S+=子文档, +V+=值, +D2/S2+ = 关联到（其他）文档的索引。
 
-.Graph Database as Document Store
+.从图数据库转换成文档型数据库
 ["dot", "graphdb-compare-docdb-g.svg", "meta", scaledwidth="75%"]
 ----
 rankdir="LR"
