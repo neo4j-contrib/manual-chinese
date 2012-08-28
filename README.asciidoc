@@ -1,7 +1,7 @@
 关于Neo4j简体中文手册
 ==================
 
-这个工程不是http://www.neo4j.org.cn[Neo4j简体中文手册]，而是这个文档的源文件。
+这个工程不是http://docs.neo4j.org[Neo4j简体中文手册]，而是这个文档的源文件。
 
 这个文档采用asciidoc格式书写，关于asciidoc的介绍，请查看:
 
@@ -31,7 +31,7 @@ Asciidoc version 8.6.3以及它依赖的一些特别是docbook，w3m，fop和gra
 
   sudo apt-get install asciidoc docbook fop graphviz w3m maven libxml2-utils xsltproc
 
-如果只是学习Neo4j，请直接浏览我们的官方网站(中文站)：http://www.neo4j.org.cn[Neo4j中文站 – 世界领先的图数据库]。
+如果只是学习Neo4j，请直接浏览我们的官方网站：http://www.neo4j.org.[Neo4j – 世界领先的图数据库]。
 
 欢迎加入我们一起推广Neo4j图数据库的使用，以及Neo4j文档的汉化工作。
 
