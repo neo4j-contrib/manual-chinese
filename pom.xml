@@ -9,14 +9,14 @@
   </parent>
   <groupId>org.neo4j.doc</groupId>
   <artifactId>neo4j-manual-zh</artifactId>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.9-SNAPSHOT</version>
   <name>Neo4j简体中文手册</name>
   <description>Neo4j简体中文手册</description>
   <url>http://components.neo4j.org/${project.artifactId}/${project.version}</url>
   <packaging>pom</packaging>
 
   <properties>
-    <neo4j.version>1.8-SNAPSHOT</neo4j.version>
+    <neo4j.version>${project.version}</neo4j.version>
     <docs.tools>${project.build.directory}/tools</docs.tools>
     <docs.upstream>${project.build.directory}</docs.upstream>
     <docs.importdir>${docs.upstream}/docs</docs.importdir>
