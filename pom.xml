@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.neo4j.build</groupId>
     <artifactId>parent-central</artifactId>
-    <version>35</version>
+    <version>36</version>
     <relativePath />
   </parent>
   <groupId>org.neo4j.doc</groupId>
@@ -27,7 +27,7 @@
     <dependency>
       <groupId>org.neo4j.build.plugins</groupId>
       <artifactId>neo4j-doctools</artifactId>
-      <version>1-SNAPSHOT</version>
+      <version>1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
