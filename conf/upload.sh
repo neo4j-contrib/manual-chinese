@@ -8,7 +8,7 @@ DIR=$(readlink -f $(dirname $0)/..)
 
 
 # Which version the documentation is now.
-VERSION=$(cat $DIR/target/classes/version)
+VERSION=$(cat $DIR/target/src/version)
 
 DOCS_SERVER='neo@static.neo4j.org'
 ROOTPATHDOCS='/var/www/docs.neo4j.org'
